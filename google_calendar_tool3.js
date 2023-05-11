@@ -1,12 +1,14 @@
 import fs from 'fs'
 import { google } from 'googleapis'
+import { Tool } from 'langchain/tools'
 import { LLMChain } from 'langchain/chains'
 import { OpenAI } from 'langchain/llms/openai'
 import { PromptTemplate } from 'langchain/prompts'
 import { CLASSIFICATION_PROMPT, CREATE_EVENT_PROMPT } from './prompts.js'
 
-export class GoogleCalendarAPIWrapper {
+export class GoogleCalendarAPIWrapper extends Tool {
   constructor() {
+    super()
     this.SCOPES = [
       'https://www.googleapis.com/auth/calendar.readonly',
       'https://www.googleapis.com/auth/calendar.events'
@@ -24,20 +26,20 @@ export class GoogleCalendarAPIWrapper {
     // const SCOPES = this.SCOPES
     const tokenPath = './token.json'
 
-    let creds = null
+    let credentials = null
 
     if (fs.existsSync(tokenPath)) {
-      creds = JSON.parse(fs.readFileSync(tokenPath, 'utf8'))
+      credentials = JSON.parse(fs.readFileSync(tokenPath, 'utf8'))
     }
 
-    if (!creds) {
+    if (!credentials) {
       throw new Error(
         'No token.json found. Please follow the Google Calendar API quickstart guide for setting up credentials.'
       )
     }
 
     const auth = new google.auth.OAuth2()
-    auth.setCredentials(creds)
+    auth.setCredentials(credentials)
 
     return google.calendar({ version: 'v3', auth })
   }
@@ -76,29 +78,26 @@ export class GoogleCalendarAPIWrapper {
   }
 
   async runClassification(query) {
-    const classificationPrompt = new PromptTemplate(CLASSIFICATION_PROMPT, [
-      'query'
-    ])
-    const llmChain = new LLMChain(
-      new OpenAI(0, 'text-davinci-003'),
-      classificationPrompt,
-      true
-    )
+    const prompt = new PromptTemplate({
+      template: CLASSIFICATION_PROMPT,
+      inputVariables: ['query']
+    })
+    const model = new OpenAI(0, 'text-davinci-003')
+    const llmChain = new LLMChain({ llm: model, prompt: prompt })
 
     return (await llmChain.run({ query })).trim().toLowerCase()
   }
 
   async runCreateEvent(query) {
-    const createEventPrompt = new PromptTemplate(CREATE_EVENT_PROMPT, [
-      'date',
-      'query',
-      'u_timezone'
-    ])
-    const createEventChain = new LLMChain(
-      new OpenAI(0, 'text-davinci-003'),
-      createEventPrompt,
-      true
-    )
+    const prompt = new PromptTemplate({
+      template: CREATE_EVENT_PROMPT,
+      inputVariables: ['date', 'query', 'u_timezone']
+    })
+    const model = new OpenAI(0, 'text-davinci-003')
+    const createEventChain = new LLMChain({
+      llm: model,
+      prompt
+    })
 
     const date = new Date().toISOString()
     const u_timezone = new Date().getTimezoneOffset()
