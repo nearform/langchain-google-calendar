@@ -13,6 +13,12 @@ export class GoogleCalendarAPIWrapper extends Tool {
       'https://www.googleapis.com/auth/calendar.readonly',
       'https://www.googleapis.com/auth/calendar.events'
     ]
+    Object.defineProperty(this, 'name', {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 'google_calendar'
+    })
     Object.defineProperty(this, 'description', {
       enumerable: true,
       configurable: true,
