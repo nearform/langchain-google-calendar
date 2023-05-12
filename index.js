@@ -4,7 +4,8 @@ import {
   RequestsGetTool,
   RequestsPostTool,
   AIPluginTool,
-  DynamicTool
+  DynamicTool,
+  DadJokeAPI
 } from 'langchain/tools'
 import readline from 'readline'
 import { GoogleCalendarAPIWrapper } from './google_calendar_tool3.js'
@@ -22,6 +23,7 @@ export const run = async () => {
       'https://www.klarna.com/.well-known/ai-plugin.json'
     ),
     new GoogleCalendarAPIWrapper(),
+    new DadJokeAPI(),
     new DynamicTool({
       name: 'FOO',
       description: 'call this to get the value of foo. Input is the question.',
@@ -45,6 +47,7 @@ export const run = async () => {
         rl.close()
         return
       }
+      console.log('question', question)
       const result = await agent.call({
         input: question
       })

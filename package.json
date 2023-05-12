@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "googleapis": "^118.0.0",
-    "langchain": "^0.0.73"
+    "langchain": "^0.0.75"
   }
 }
