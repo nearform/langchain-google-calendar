@@ -23,7 +23,8 @@ export class GoogleCalendarAPIWrapper extends Tool {
       enumerable: true,
       configurable: true,
       writable: true,
-      value: 'A tool for managing Google Calendar events.'
+      value:
+        'A tool for managing Google Calendar events. Input should be the initial user prompt'
     })
     this.service = this.validateEnvironment()
   }
