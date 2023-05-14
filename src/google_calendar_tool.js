@@ -101,7 +101,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
     })
     const model = new OpenAI({
       temperature: 0,
-      openAIApiKey: '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'
+      openAIApiKey: process.env.OPEN_AI_API_KEY
     })
     const llmChain = new LLMChain({ llm: model, prompt: prompt })
 
@@ -115,7 +115,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
     })
     const model = new OpenAI({
       temperature: 0,
-      openAIApiKey: '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'
+      openAIApiKey: process.env.OPEN_AI_API_KEY
     })
     const createEventChain = new LLMChain({
       llm: model,

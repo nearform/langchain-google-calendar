@@ -34,6 +34,7 @@
     "*.{js,jsx}": "eslint --cache --fix"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "googleapis": "^118.0.0",
     "langchain": "^0.0.75"
   }
