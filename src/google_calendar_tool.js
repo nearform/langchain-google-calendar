@@ -4,7 +4,9 @@ import { Tool } from 'langchain/tools'
 import { LLMChain } from 'langchain/chains'
 import { OpenAI } from 'langchain/llms/openai'
 import { PromptTemplate } from 'langchain/prompts'
-import { CLASSIFICATION_PROMPT, CREATE_EVENT_PROMPT } from './prompts.js'
+import { CLASSIFICATION_PROMPT } from './prompts/classification-prompt.js'
+import { CREATE_EVENT_PROMPT } from './prompts/create-event-prompt.js'
+import { getTimezoneOffsetInHours } from './utils/get-timezone-offset-in-hours.js'
 
 const calendar = google.calendar('v3')
 
@@ -28,11 +30,9 @@ export class GoogleCalendarAPIWrapper extends Tool {
       value:
         'A tool for managing Google Calendar events. Input should be the initial user prompt'
     })
-    this.auth = this.validateEnvironment
   }
 
   async validateEnvironment() {
-    // const SCOPES = this.SCOPES
     const tokenPath = './token.json'
 
     let credentials = null
@@ -90,7 +90,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       })
       return createdEvent
     } catch (error) {
-      return `An error occurred XY: ${error}`
+      return `An error occurred: ${error}`
     }
   }
 
@@ -123,11 +123,9 @@ export class GoogleCalendarAPIWrapper extends Tool {
     })
 
     const date = new Date().toISOString()
-    const u_timezone = 2
-
-    console.log('query', query)
-    console.log('date', date)
+    const u_timezone = getTimezoneOffsetInHours()
     console.log('u_timezone', u_timezone)
+
     const output = await createEventChain.call({ query, date, u_timezone })
     const loaded = JSON.parse(output['text'])
 

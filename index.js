@@ -1,14 +1,8 @@
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { initializeAgentExecutorWithOptions } from 'langchain/agents'
-import {
-  RequestsGetTool,
-  RequestsPostTool,
-  AIPluginTool,
-  DynamicTool,
-  DadJokeAPI
-} from 'langchain/tools'
+import { RequestsGetTool, RequestsPostTool, DynamicTool } from 'langchain/tools'
 import readline from 'readline'
-import { GoogleCalendarAPIWrapper } from './google_calendar_tool.js'
+import { GoogleCalendarAPIWrapper } from './src/google_calendar_tool.js'
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,11 +13,7 @@ export const run = async () => {
   const tools = [
     new RequestsGetTool(),
     new RequestsPostTool(),
-    await AIPluginTool.fromPluginUrl(
-      'https://www.klarna.com/.well-known/ai-plugin.json'
-    ),
     new GoogleCalendarAPIWrapper(),
-    new DadJokeAPI(),
     new DynamicTool({
       name: 'FOO',
       description: 'call this to get the value of foo. Input is the question.',
