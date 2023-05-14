@@ -10,8 +10,8 @@ node_modules
 .DS_Store
 
 # Files
-token.json
 src/google_calendar_tool1.js
 src/google_calendar_tool2.js
+
 
 .env

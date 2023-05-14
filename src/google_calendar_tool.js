@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { google } from 'googleapis'
 import { Tool } from 'langchain/tools'
 import { LLMChain } from 'langchain/chains'
@@ -30,27 +29,17 @@ export class GoogleCalendarAPIWrapper extends Tool {
       value:
         'A tool for managing Google Calendar events. Input should be the initial user prompt'
     })
+    this.model = new OpenAI({
+      temperature: 0,
+      openAIApiKey: process.env.OPEN_AI_API_KEY
+    })
   }
 
-  async validateEnvironment() {
-    const tokenPath = './token.json'
-
-    let credentials = null
-
-    if (fs.existsSync(tokenPath)) {
-      credentials = JSON.parse(fs.readFileSync(tokenPath, 'utf8'))
-    }
-
-    if (!credentials) {
-      throw new Error(
-        'No token.json found. Please follow the Google Calendar API quickstart guide for setting up credentials.'
-      )
-    }
-
+  async getAuth() {
     const auth = new google.auth.JWT(
-      credentials.client_email,
+      process.env.CLIENT_EMAIL,
       null,
-      credentials.private_key,
+      process.env.PRIVATE_KEY,
       this.SCOPES
     )
 
@@ -79,7 +68,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       }
     }
 
-    const auth = await this.validateEnvironment()
+    const auth = await this.getAuth()
 
     try {
       const createdEvent = await calendar.events.insert({
@@ -99,11 +88,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       template: CLASSIFICATION_PROMPT,
       inputVariables: ['query']
     })
-    const model = new OpenAI({
-      temperature: 0,
-      openAIApiKey: process.env.OPEN_AI_API_KEY
-    })
-    const llmChain = new LLMChain({ llm: model, prompt: prompt })
+    const llmChain = new LLMChain({ llm: this.model, prompt: prompt })
 
     return (await llmChain.run({ query })).trim().toLowerCase()
   }
@@ -113,12 +98,8 @@ export class GoogleCalendarAPIWrapper extends Tool {
       template: CREATE_EVENT_PROMPT,
       inputVariables: ['date', 'query', 'u_timezone']
     })
-    const model = new OpenAI({
-      temperature: 0,
-      openAIApiKey: process.env.OPEN_AI_API_KEY
-    })
     const createEventChain = new LLMChain({
-      llm: model,
+      llm: this.model,
       prompt
     })
 
