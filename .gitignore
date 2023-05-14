@@ -10,5 +10,5 @@ node_modules
 .DS_Store
 
 token.json
-google_calendar_tool.js
+google_calendar_tool1.js
 google_calendar_tool2.js

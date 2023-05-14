@@ -8,7 +8,7 @@ import {
   DadJokeAPI
 } from 'langchain/tools'
 import readline from 'readline'
-import { GoogleCalendarAPIWrapper } from './google_calendar_tool3.js'
+import { GoogleCalendarAPIWrapper } from './google_calendar_tool.js'
 
 const rl = readline.createInterface({
   input: process.stdin,
