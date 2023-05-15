@@ -3,9 +3,10 @@ import { Tool } from 'langchain/tools'
 import { LLMChain } from 'langchain/chains'
 import { OpenAI } from 'langchain/llms/openai'
 import { PromptTemplate } from 'langchain/prompts'
-import { CLASSIFICATION_PROMPT } from './prompts/classification-prompt.js'
+import { EVENT_CLASSIFICATION_PROMPT } from './prompts/event-classification-prompt.js'
 import { CREATE_EVENT_PROMPT } from './prompts/create-event-prompt.js'
 import { getTimezoneOffsetInHours } from './utils/get-timezone-offset-in-hours.js'
+import { VIEW_EVENTS_PROMPT } from './prompts/view-events-prompt.js'
 
 const calendar = google.calendar('v3')
 
@@ -27,7 +28,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       configurable: true,
       writable: true,
       value:
-        'A tool for managing Google Calendar events. Input should be the initial user prompt'
+        'A tool for managing and retrieving Google Calendar events. Input should be the initial user prompt'
     })
     this.model = new OpenAI({
       temperature: 0,
@@ -73,8 +74,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
     try {
       const createdEvent = await calendar.events.insert({
         auth,
-        calendarId:
-          '800376f29756933f9361aca31d0578454f54e56287c22071b0a6855d67de35be@group.calendar.google.com',
+        calendarId: process.env.CALENDAR_ID,
         requestBody: event
       })
       return createdEvent
@@ -85,12 +85,16 @@ export class GoogleCalendarAPIWrapper extends Tool {
 
   async runClassification(query) {
     const prompt = new PromptTemplate({
-      template: CLASSIFICATION_PROMPT,
+      template: EVENT_CLASSIFICATION_PROMPT,
       inputVariables: ['query']
     })
-    const llmChain = new LLMChain({ llm: this.model, prompt: prompt })
+    const createEventChain = new LLMChain({
+      llm: this.model,
+      prompt: prompt,
+      verbose: true
+    })
 
-    return (await llmChain.run({ query })).trim().toLowerCase()
+    return (await createEventChain.call({ query })).text
   }
 
   async runCreateEvent(query) {
@@ -105,7 +109,6 @@ export class GoogleCalendarAPIWrapper extends Tool {
 
     const date = new Date().toISOString()
     const u_timezone = getTimezoneOffsetInHours()
-    console.log('u_timezone', u_timezone)
 
     const output = await createEventChain.call({ query, date, u_timezone })
     const loaded = JSON.parse(output['text'])
@@ -131,18 +134,62 @@ export class GoogleCalendarAPIWrapper extends Tool {
     return `Event created successfully, details: event ${event.data.htmlLink}`
   }
 
+  async runViewEvents(query) {
+    const prompt = new PromptTemplate({
+      template: VIEW_EVENTS_PROMPT,
+      inputVariables: ['date', 'query', 'u_timezone']
+    })
+    const viewEventsChain = new LLMChain({
+      llm: this.model,
+      prompt
+    })
+
+    const date = new Date().toISOString()
+    const u_timezone = getTimezoneOffsetInHours()
+
+    const output = await viewEventsChain.call({ query, date, u_timezone })
+    const loaded = JSON.parse(output['text'])
+
+    const auth = await this.getAuth()
+
+    try {
+      const response = await calendar.events.list({
+        auth,
+        calendarId: process.env.CALENDAR_ID,
+        ...loaded
+      })
+
+      let outputString = ''
+      response.data.items.forEach(item => {
+        let startDateTime = new Date(item.start.dateTime)
+        let endDateTime = new Date(item.end.dateTime)
+
+        let startDateTimeStr = startDateTime.toLocaleString()
+        let endDateTimeStr = endDateTime.toLocaleString()
+
+        outputString += `- ${item.summary} - (from ${startDateTimeStr} to ${endDateTimeStr})\n`
+      })
+
+      return (
+        'List of events retrieved successfully, the readable list of events to print out: \n' +
+        outputString
+      )
+    } catch (error) {
+      return `An error occurred: ${error}`
+    }
+  }
+
   async _call(query) {
     const classification = await this.runClassification(query)
 
     console.log('classification', classification)
 
-    if (
-      classification === 'create_event' ||
-      classification === 'reschedule_event' // TODO remove later
-    ) {
+    if (classification === 'create_event') {
       return await this.runCreateEvent(query)
+    } else if (classification === 'view_events') {
+      return await this.runViewEvents()
     }
 
-    return 'Currently only create event is supported'
+    return 'Currently only create event and view events are supported. Stopping execution.'
   }
 }
