@@ -1,5 +1,6 @@
 node_modules
 .eslintcache
+.env
 
 # JetBrains IDEs
 .idea
@@ -9,9 +10,3 @@ node_modules
 # OS X
 .DS_Store
 
-# Files
-src/google_calendar_tool1.js
-src/google_calendar_tool2.js
-
-
-.env
