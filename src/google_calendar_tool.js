@@ -28,9 +28,12 @@ export class GoogleCalendarAPIWrapper extends Tool {
       configurable: true,
       writable: true,
       value:
-        'A tool for managing and retrieving Google Calendar events. Input should be the initial user prompt'
+        'A tool for managing and retrieving Google Calendar events and meetings. Input should be the initial user prompt'
     })
-    this.model = new OpenAI({
+  }
+
+  getModel() {
+    return new OpenAI({
       temperature: 0,
       openAIApiKey: process.env.OPEN_AI_API_KEY
     })
@@ -45,6 +48,20 @@ export class GoogleCalendarAPIWrapper extends Tool {
     )
 
     return auth
+  }
+
+  async runClassification(query) {
+    const prompt = new PromptTemplate({
+      template: EVENT_CLASSIFICATION_PROMPT,
+      inputVariables: ['query']
+    })
+    const createEventChain = new LLMChain({
+      llm: this.getModel(),
+      prompt: prompt,
+      verbose: true
+    })
+
+    return (await createEventChain.call({ query })).text
   }
 
   async createEvent(
@@ -83,27 +100,13 @@ export class GoogleCalendarAPIWrapper extends Tool {
     }
   }
 
-  async runClassification(query) {
-    const prompt = new PromptTemplate({
-      template: EVENT_CLASSIFICATION_PROMPT,
-      inputVariables: ['query']
-    })
-    const createEventChain = new LLMChain({
-      llm: this.model,
-      prompt: prompt,
-      verbose: true
-    })
-
-    return (await createEventChain.call({ query })).text
-  }
-
   async runCreateEvent(query) {
     const prompt = new PromptTemplate({
       template: CREATE_EVENT_PROMPT,
       inputVariables: ['date', 'query', 'u_timezone']
     })
     const createEventChain = new LLMChain({
-      llm: this.model,
+      llm: this.getModel(),
       prompt
     })
 
@@ -140,7 +143,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       inputVariables: ['date', 'query', 'u_timezone']
     })
     const viewEventsChain = new LLMChain({
-      llm: this.model,
+      llm: this.getModel(),
       prompt
     })
 
@@ -170,10 +173,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
         outputString += `- ${item.summary} - (from ${startDateTimeStr} to ${endDateTimeStr})\n`
       })
 
-      return (
-        'List of events retrieved successfully, the readable list of events to print out: \n' +
-        outputString
-      )
+      return 'Success, here is the bullet list of events: \n' + outputString
     } catch (error) {
       return `An error occurred: ${error}`
     }
@@ -187,7 +187,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
     if (classification === 'create_event') {
       return await this.runCreateEvent(query)
     } else if (classification === 'view_events') {
-      return await this.runViewEvents()
+      return await this.runViewEvents(query)
     }
 
     return 'Currently only create event and view events are supported. Stopping execution.'
