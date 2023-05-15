@@ -1,6 +1,5 @@
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { initializeAgentExecutorWithOptions } from 'langchain/agents'
-import { RequestsGetTool, RequestsPostTool } from 'langchain/tools'
 import readline from 'readline'
 import { GoogleCalendarAPIWrapper } from './src/google_calendar_tool.js'
 import * as dotenv from 'dotenv'
@@ -12,11 +11,7 @@ const rl = readline.createInterface({
 })
 
 export const run = async () => {
-  const tools = [
-    new RequestsGetTool(),
-    new RequestsPostTool(),
-    new GoogleCalendarAPIWrapper()
-  ]
+  const tools = [new GoogleCalendarAPIWrapper()]
   const agent = await initializeAgentExecutorWithOptions(
     tools,
     new ChatOpenAI({
