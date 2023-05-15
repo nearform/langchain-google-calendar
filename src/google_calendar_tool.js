@@ -7,6 +7,7 @@ import { EVENT_CLASSIFICATION_PROMPT } from './prompts/event-classification-prom
 import { CREATE_EVENT_PROMPT } from './prompts/create-event-prompt.js'
 import { getTimezoneOffsetInHours } from './utils/get-timezone-offset-in-hours.js'
 import { VIEW_EVENTS_PROMPT } from './prompts/view-events-prompt.js'
+import { DESCRIPTION } from './description.js'
 
 const calendar = google.calendar('v3')
 
@@ -27,8 +28,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       enumerable: true,
       configurable: true,
       writable: true,
-      value:
-        'A tool for managing and retrieving Google Calendar events and meetings. Input should be the initial user prompt'
+      value: DESCRIPTION
     })
   }
 
@@ -134,7 +134,7 @@ export class GoogleCalendarAPIWrapper extends Tool {
       eventDescription
     )
 
-    return `Event created successfully, details: event ${event.data.htmlLink}`
+    return `Stopping execution, event created successfully, details: event ${event.data.htmlLink}`
   }
 
   async runViewEvents(query) {
@@ -173,7 +173,10 @@ export class GoogleCalendarAPIWrapper extends Tool {
         outputString += `- ${item.summary} - (from ${startDateTimeStr} to ${endDateTimeStr})\n`
       })
 
-      return 'Success, here is the bullet list of events: \n' + outputString
+      return (
+        'Stopping execution, requested events to display to the user: \n' +
+        outputString
+      )
     } catch (error) {
       return `An error occurred: ${error}`
     }
