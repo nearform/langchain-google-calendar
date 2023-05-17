@@ -39,15 +39,15 @@ export const run = async () => {
     console.log(
       chalk.bold.yellow('Supported operations: create_event, view_events')
     )
-    console.log(chalk.bold('Here is an example of what you can ask:'))
+    console.log(chalk.bold('Here are examples of what you can ask:'))
     console.log(
-      chalk.cyan('> Create a new meeting tomorrow at 4pm with John Doe')
+      chalk.cyan('- Create a new meeting tomorrow at 4pm with John Doe')
     )
     console.log(
-      chalk.cyan('> Create a new event today morning to discuss the project')
+      chalk.cyan('- Create a new event today morning to discuss the project')
     )
-    console.log(chalk.cyan('> What are my meetings today?'))
-    console.log(chalk.cyan('> How many meetings do I have today?'))
+    console.log(chalk.cyan('- What are my meetings today?'))
+    console.log(chalk.cyan('- How many meetings do I have today?'))
     console.log(chalk.bold('----------------------------------------------'))
   }
 
