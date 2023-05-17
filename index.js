@@ -4,7 +4,10 @@ import readline from 'readline'
 import { GoogleCalendarTool } from './src/google_calendar_tool.js'
 import * as dotenv from 'dotenv'
 import chalk from 'chalk'
+import { checkEnvVars } from './src/utils/index.js'
 dotenv.config()
+
+checkEnvVars()
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -30,7 +33,9 @@ export const run = async () => {
   )
 
   const showInfoMessage = () => {
-    console.log(chalk.bold.green('Welcome to the LangChain Google Calendar!'))
+    console.log(
+      chalk.bold.green('Welcome to the LangChain with Google Calendar tool!')
+    )
     console.log(
       chalk.bold.yellow('Supported operations: create_event, view_events')
     )
@@ -39,6 +44,7 @@ export const run = async () => {
       chalk.cyan('> Create a new meeting tomorrow at 4pm with John Doe')
     )
     console.log(chalk.cyan('> What are my meetings for today?'))
+    console.log(chalk.cyan('> How many meetings do I have today?'))
     console.log(chalk.bold('----------------------------------------------'))
   }
 

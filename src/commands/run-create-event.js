@@ -1,7 +1,7 @@
 import { PromptTemplate } from 'langchain/prompts'
 import { CREATE_EVENT_PROMPT } from '../prompts/index.js'
 import { LLMChain } from 'langchain/chains'
-import { getTimezoneOffsetInHours } from '../utils/get-timezone-offset-in-hours.js'
+import { getTimezoneOffsetInHours } from '../utils/index.js'
 import { google } from 'googleapis'
 
 const calendar = google.calendar('v3')
