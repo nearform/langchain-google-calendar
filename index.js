@@ -43,7 +43,10 @@ export const run = async () => {
     console.log(
       chalk.cyan('> Create a new meeting tomorrow at 4pm with John Doe')
     )
-    console.log(chalk.cyan('> What are my meetings for today?'))
+    console.log(
+      chalk.cyan('> Create a new event today morning to discuss the project')
+    )
+    console.log(chalk.cyan('> What are my meetings today?'))
     console.log(chalk.cyan('> How many meetings do I have today?'))
     console.log(chalk.bold('----------------------------------------------'))
   }
