@@ -21,8 +21,17 @@ export const run = async () => {
     { agentType: 'chat-zero-shot-react-description', verbose: true }
   )
 
+  const showInfoMessage = () => {
+    console.log('Welcome to the LangChain Google Calendar!')
+    console.log('Supported operations: create_event, view_events')
+    console.log('Here is an example of what you can ask:')
+    console.log('> Create a new meeting tomorrow at 4pm with John Doe')
+    console.log('> What are my meetings for today?')
+    console.log('----------------------------------------------')
+  }
+
   const askQuestion = async () => {
-    rl.question('Enter your question: ', async question => {
+    rl.question('Enter your prompt: ', async question => {
       if (question.toLowerCase() === 'exit') {
         rl.close()
         return
@@ -35,6 +44,7 @@ export const run = async () => {
     })
   }
 
+  showInfoMessage()
   askQuestion()
 }
 
