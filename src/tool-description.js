@@ -1,4 +1,4 @@
-export const DESCRIPTION = `A tool for managing and retrieving Google Calendar events and meetings.
+export const TOOL_DESCRIPTION = `A tool for managing and retrieving Google Calendar events and meetings.
 
 Examples of usage:
 {{
@@ -8,7 +8,7 @@ Examples of usage:
 
 {{
   "action": "google_calendar",
-  "action_input": "display events for tomorrow"
+  "action_input": "show events for tomorrow"
 }}
 
 {{
@@ -18,7 +18,7 @@ Examples of usage:
 
 {{
   "action": "google_calendar",
-  "action_input": "display yesterday events"
+  "action_input": "display yesterday's events"
 }}
 
 {{
