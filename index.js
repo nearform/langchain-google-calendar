@@ -51,22 +51,22 @@ export const run = async () => {
     console.log(chalk.bold('----------------------------------------------'))
   }
 
-  const askQuestion = async () => {
-    rl.question('Enter your prompt: ', async question => {
-      if (question.toLowerCase() === 'exit') {
+  const enterPrompt = async () => {
+    rl.question('Enter your prompt: ', async prompt => {
+      if (prompt.toLowerCase() === 'exit') {
         rl.close()
         return
       }
       const result = await agent.call({
-        input: question
+        input: prompt
       })
       console.log({ result })
-      askQuestion()
+      await enterPrompt()
     })
   }
 
   showInfoMessage()
-  askQuestion()
+  await enterPrompt()
 }
 
 run()

@@ -1,5 +1,5 @@
 export const EVENT_CLASSIFICATION_PROMPT = `
->> "Create our meeting for 5 pm today."
+Prompt: "Create our meeting for 5 pm today."
 The following is an action to be taken in a calendar.
 Classify it as one of the following:
 1. create_event
@@ -7,9 +7,9 @@ Classify it as one of the following:
 3. view_events
 4. delete_event
 5. reschedule_event
-Classification: create_event \n\n
+Classification: create_event
 
->> "Show all my events today."
+Prompt: "Show all my events today."
 The following is an action to be taken in a calendar.
 Classify it as one of the following:
 1. create_event
@@ -17,9 +17,9 @@ Classify it as one of the following:
 3. view_events
 4. delete_event
 5. reschedule_event
-Classification: view_events \n\n
+Classification: view_events
 
->> "What are my meetings tomorrow?"
+Prompt: "What are my meetings tomorrow?"
 The following is an action to be taken in a calendar.
 Classify it as one of the following:
 1. create_event
@@ -27,9 +27,9 @@ Classify it as one of the following:
 3. view_events
 4. delete_event
 5. reschedule_event
-Classification: view_events \n\n
+Classification: view_events
 
->> "{query}"
+Prompt: "{query}"
 The following is an action to be taken in a calendar.
 Classify it as one of the following:
 1. create_event

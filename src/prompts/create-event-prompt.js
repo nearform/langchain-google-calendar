@@ -1,6 +1,6 @@
 export const CREATE_EVENT_PROMPT = `
 Date format: YYYY-MM-DDThh:mm:ss+00:00
-Based on this event description:"Joey birthday tomorrow at 7 pm",
+Based on this event description: "Joey birthday tomorrow at 7 pm",
 output a json of the following parameters: 
 Today's datetime on UTC time 2021-05-02T10:00:00+00:00 and timezone
 of the user is -5, take into account the timezone of the user and today's date.
@@ -21,7 +21,7 @@ event_summary:
 }}
 
 Date format: YYYY-MM-DDThh:mm:ss+00:00
-Based on this event description:"Create a meeting for 5 pm today with Joey",
+Based on this event description: "Create a meeting for 5 pm today with Joey",
 output a json of the following parameters: 
 Today's datetime on UTC time 2021-05-02T10:00:00+00:00 and timezone
 of the user is -5, take into account the timezone of the user and today's date.
@@ -42,7 +42,7 @@ event_summary:
 }}
 
 Date format: YYYY-MM-DDThh:mm:ss+00:00
-Based on this event description: '{query}', output a json of the
+Based on this event description: "{query}", output a json of the
 following parameters: 
 Today's datetime on UTC time {date} and timezone of the user {u_timezone},
 take into account the timezone of the user and today's date.

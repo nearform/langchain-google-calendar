@@ -25,4 +25,8 @@ Examples of usage:
   "action": "google_calendar",
   "action_input": "create a new meeting with John Doe tomorrow at 4pm"
 }}
+
+Result of this tool is either:
+- confirmation of a created event
+- parsed list of events: title, start time, end time, attendees, description (if available)
 `
