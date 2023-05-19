@@ -2,7 +2,7 @@ import { PromptTemplate } from 'langchain/prompts'
 import { LLMChain } from 'langchain/chains'
 import { google } from 'googleapis'
 import { VIEW_EVENTS_PROMPT } from '../prompts/index.js'
-import { getTimezoneOffsetInHours } from '../utils/get-timezone-offset-in-hours.js'
+import { getTimezoneOffsetInHours } from '../utils/index.js'
 
 const calendar = google.calendar('v3')
 
@@ -30,10 +30,9 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
     })
 
     const curatedItems = response.data.items.map(
-      ({ id, status, htmlLink, summary, description, start, end }) => ({
+      ({ id, status, summary, description, start, end }) => ({
         id,
         status,
-        htmlLink,
         summary,
         description,
         start,
@@ -41,10 +40,7 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
       })
     )
 
-    return (
-      'Stopping execution, requested events to display to the user: \n' +
-      JSON.stringify(curatedItems, null, 2)
-    )
+    return 'Events in JSON format: \n' + JSON.stringify(curatedItems, null, 2)
   } catch (error) {
     return `An error occurred: ${error}`
   }

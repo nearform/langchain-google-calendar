@@ -9,7 +9,7 @@ import { runCreateEvent } from './commands/run-create-event.js'
 import { runViewEvents } from './commands/run-view-events.js'
 
 export class GoogleCalendarTool extends Tool {
-  constructor({ openAIApiKey, clientEmail, privateKey, calendarId }) {
+  constructor({ clientEmail, privateKey, calendarId }) {
     super()
     this.SCOPES = [
       'https://www.googleapis.com/auth/calendar',
@@ -27,7 +27,6 @@ export class GoogleCalendarTool extends Tool {
       writable: true,
       value: TOOL_DESCRIPTION
     })
-    this.OPEN_AI_API_KEY = openAIApiKey
     this.CLIENT_EMAIL = clientEmail
     this.PRIVATE_KEY = privateKey
     this.CALENDAR_ID = calendarId
@@ -35,8 +34,7 @@ export class GoogleCalendarTool extends Tool {
 
   getModel() {
     return new OpenAI({
-      temperature: 0,
-      openAIApiKey: this.OPEN_AI_API_KEY
+      temperature: 0
     })
   }
 

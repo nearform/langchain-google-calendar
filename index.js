@@ -17,7 +17,6 @@ const rl = readline.createInterface({
 export const run = async () => {
   const tools = [
     new GoogleCalendarTool({
-      openAIApiKey: process.env.OPEN_AI_API_KEY,
       clientEmail: process.env.CLIENT_EMAIL,
       privateKey: process.env.PRIVATE_KEY,
       calendarId: process.env.CALENDAR_ID
@@ -26,10 +25,9 @@ export const run = async () => {
   const agent = await initializeAgentExecutorWithOptions(
     tools,
     new ChatOpenAI({
-      temperature: 0,
-      openAIApiKey: process.env.OPEN_AI_API_KEY
+      temperature: 0
     }),
-    { agentType: 'chat-zero-shot-react-description', verbose: true }
+    { agentType: 'chat-conversational-react-description', verbose: true }
   )
 
   const showInfoMessage = () => {

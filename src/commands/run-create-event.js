@@ -81,7 +81,7 @@ const runCreateEvent = async (query, { calendarId, auth, model }) => {
     auth
   )
 
-  return `Stopping execution, event created successfully, details: event ${event.data.htmlLink}`
+  return `Event created successfully, details: event ${event.data.htmlLink}`
 }
 
 export { runCreateEvent }

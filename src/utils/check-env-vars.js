@@ -2,7 +2,7 @@ import chalk from 'chalk'
 
 const checkEnvVars = () => {
   const requiredEnvVars = [
-    'OPEN_AI_API_KEY',
+    'OPENAI_API_KEY',
     'CLIENT_EMAIL',
     'PRIVATE_KEY',
     'CALENDAR_ID'

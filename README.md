@@ -13,7 +13,7 @@ To run this project, you will need to have:
 1. Login to your OpenAI account.
 1. Go to [API keys](https://platform.openai.com/account/api-keys) page
 1. Create a new API key ![openai.jpg](readmeFiles%2Fopenai.jpg)
-1. Set the `OPEN_AI_API_KEY` in the `.env` file to the value of the API key.
+1. Set the `OPENAI_API_KEY` in the `.env` file to the value of the API key.
 
 ### Google Cloud API Setup
 
