@@ -1,5 +1,5 @@
 export const EVENT_CLASSIFICATION_PROMPT = `
-Prompt: "Create our meeting for 5 pm today."
+Prompt: "Create a new meeting for 5 pm today."
 The following is an action to be taken in a calendar.
 Classify it as one of the following:
 1. create_event
