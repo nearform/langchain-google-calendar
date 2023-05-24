@@ -38,6 +38,6 @@
     "chalk": "^5.2.0",
     "dotenv": "^16.0.3",
     "googleapis": "^118.0.0",
-    "langchain": "^0.0.79"
+    "langchain": "^0.0.81"
   }
 }
