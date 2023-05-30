@@ -4,7 +4,7 @@ This is a Google Calendar JS tool for LangChain. It allows creating and retrievi
 ## Setup
 
 To run this project, you will need to have:
-- OpenAI API Key
+- OpenAI API Key (from a paid OpenAI account with active quota)
 - Google Cloud API credentials
 - Google Calendar ID
 
@@ -15,9 +15,20 @@ To run this project, you will need to have:
 1. Create a new API key ![openai.jpg](readmeFiles%2Fopenai.jpg)
 1. Set the `OPENAI_API_KEY` in the `.env` file to the value of the API key.
 
+Note that while free OpenAI accounts will allow API keys to be created, attempting to use them will fail with:
+
+> Error 429. You exceeded your current quota, please check your plan and billing details
+
 ### Google Cloud API Setup
 
 1. [Create a new project](https://console.cloud.google.com/projectcreate) in the Google Developer Console. ![google-developer-console-1.jpg](readmeFiles%2Fgoogle-developer-console-1.jpg)
+   - If it treats `Location` as a required field ("You must select a parent organisation or folder"), and no suitable location is available, you're probably on a Google account linked to an organisation with permissions restrictions. You can either:
+      - Switch to a personal Google Account, which usually allow no location, or
+      - Request your GCP administrator grants you `resourcemanager.projects.create` permission (or does these steps for you) 
+1. In "APIs and Services", enable the Google Calendar API ![google-developer-console-4.gif](readmeFiles%2Fgoogle-developer-console-4.gif)
+   1. Click on "APIs and Services" in the burger menu, then "Enable APIs and Services".
+   1. Find and select "Google Calendar API"
+   1. If it is not already enabled, press "Enable"
 1. Create a new service account: ![google-developer-console-2.gif](readmeFiles%2Fgoogle-developer-console-2.gif)
    1. Click on "IAM and Admin" in the burger menu, then "Service accounts".
    1. Click on "Create Service Account".
