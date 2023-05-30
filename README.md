@@ -4,7 +4,7 @@ This is a Google Calendar JS tool for LangChain. It allows creating and retrievi
 ## Setup
 
 To run this project, you will need to have:
-- OpenAI API Key
+- OpenAI API Key (from a paid OpenAI account with active quota)
 - Google Cloud API credentials
 - Google Calendar ID
 
@@ -14,6 +14,10 @@ To run this project, you will need to have:
 1. Go to [API keys](https://platform.openai.com/account/api-keys) page
 1. Create a new API key ![openai.jpg](readmeFiles%2Fopenai.jpg)
 1. Set the `OPENAI_API_KEY` in the `.env` file to the value of the API key.
+
+Note that while free OpenAI accounts will allow API keys to be created, attempting to use them will fail with:
+
+> Error 429. You exceeded your current quota, please check your plan and billing details
 
 ### Google Cloud API Setup
 
