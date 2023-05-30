@@ -26,6 +26,9 @@ Note that while free OpenAI accounts will allow API keys to be created, attempti
       - Switch to a personal Google Account, which usually allow no location, or
       - Request your GCP administrator grants you `resourcemanager.projects.create` permission (or does these steps for you) 
 1. In "APIs and Services", enable the Google Calendar API ![google-developer-console-4.gif](readmeFiles%2Fgoogle-developer-console-4.gif)
+   1. Click on "APIs and Services" in the burger menu, then "Enable APIs and Services".
+   1. Find and select "Google Calendar API"
+   1. If it is not already enabled, press "Enable"
 1. Create a new service account: ![google-developer-console-2.gif](readmeFiles%2Fgoogle-developer-console-2.gif)
    1. Click on "IAM and Admin" in the burger menu, then "Service accounts".
    1. Click on "Create Service Account".
