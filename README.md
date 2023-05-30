@@ -22,6 +22,9 @@ Note that while free OpenAI accounts will allow API keys to be created, attempti
 ### Google Cloud API Setup
 
 1. [Create a new project](https://console.cloud.google.com/projectcreate) in the Google Developer Console. ![google-developer-console-1.jpg](readmeFiles%2Fgoogle-developer-console-1.jpg)
+   - If it treats `Location` as a required field ("You must select a parent organisation or folder"), and no suitable location is available, you're probably on a Google account linked to an organisation with permissions restrictions. You can either:
+      - Switch to a personal Google Account, which usually allow no location, or
+      - Request your GCP administrator grants you `resourcemanager.projects.create` permission (or does these steps for you) 
 1. Create a new service account: ![google-developer-console-2.gif](readmeFiles%2Fgoogle-developer-console-2.gif)
    1. Click on "IAM and Admin" in the burger menu, then "Service accounts".
    1. Click on "Create Service Account".
