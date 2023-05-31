@@ -1,32 +1,20 @@
 import { google } from 'googleapis'
 import { Tool } from 'langchain/tools'
-import { LLMChain } from 'langchain/chains'
 import { OpenAI } from 'langchain/llms/openai'
-import { PromptTemplate } from 'langchain/prompts'
-import { EVENT_CLASSIFICATION_PROMPT } from './prompts/index.js'
-import { TOOL_DESCRIPTION } from './tool-description.js'
 import { runCreateEvent } from './commands/run-create-event.js'
 import { runViewEvents } from './commands/run-view-events.js'
+import {
+  CREATE_TOOL_DESCRIPTION,
+  VIEW_TOOL_DESCRIPTION
+} from './tool-descriptions.js'
 
-export class GoogleCalendarTool extends Tool {
+class GoogleCalendarBase extends Tool {
   constructor({ clientEmail, privateKey, calendarId }) {
     super()
     this.SCOPES = [
       'https://www.googleapis.com/auth/calendar',
       'https://www.googleapis.com/auth/calendar.events'
     ]
-    Object.defineProperty(this, 'name', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: 'google_calendar'
-    })
-    Object.defineProperty(this, 'description', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: TOOL_DESCRIPTION
-    })
     this.CLIENT_EMAIL = clientEmail
     this.PRIVATE_KEY = privateKey
     this.CALENDAR_ID = calendarId
@@ -48,44 +36,62 @@ export class GoogleCalendarTool extends Tool {
 
     return auth
   }
+}
 
-  async runClassification(query) {
-    const prompt = new PromptTemplate({
-      template: EVENT_CLASSIFICATION_PROMPT,
-      inputVariables: ['query']
+export class GoogleCalendarCreateTool extends GoogleCalendarBase {
+  constructor(params) {
+    super(params)
+    Object.defineProperty(this, 'name', {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 'google_calendar_create'
     })
-    const createEventChain = new LLMChain({
-      llm: this.getModel(),
-      prompt,
-      verbose: true
+    Object.defineProperty(this, 'description', {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: CREATE_TOOL_DESCRIPTION
     })
-
-    return (await createEventChain.call({ query })).text
   }
 
   async _call(query) {
     const auth = await this.getAuth()
     const model = this.getModel()
 
-    const classification = await this.runClassification(query)
+    return await runCreateEvent(query, {
+      auth,
+      model,
+      calendarId: this.CALENDAR_ID
+    })
+  }
+}
 
-    console.log('Detected classification: ', classification)
+export class GoogleCalendarViewTool extends GoogleCalendarBase {
+  constructor(params) {
+    super(params)
+    Object.defineProperty(this, 'name', {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: 'google_calendar_view'
+    })
+    Object.defineProperty(this, 'description', {
+      enumerable: true,
+      configurable: true,
+      writable: true,
+      value: VIEW_TOOL_DESCRIPTION
+    })
+  }
 
-    switch (classification) {
-      case 'create_event':
-        return await runCreateEvent(query, {
-          auth,
-          model,
-          calendarId: this.CALENDAR_ID
-        })
-      case 'view_events':
-        return await runViewEvents(query, {
-          auth,
-          model,
-          calendarId: this.CALENDAR_ID
-        })
-      default:
-        return 'Currently only create event and view events are supported. Stopping execution.'
-    }
+  async _call(query) {
+    const auth = await this.getAuth()
+    const model = this.getModel()
+
+    return await runViewEvents(query, {
+      auth,
+      model,
+      calendarId: this.CALENDAR_ID
+    })
   }
 }
