@@ -58,4 +58,8 @@ Note that while free OpenAI accounts will allow API keys to be created, attempti
 1. Get the calendar ID from the "Integrate calendar" section ![google-calendar-4.jpg](.%2Ffiles%2Fgoogle-calendar-4.jpg) 
 1. Set the `CALENDAR_ID` in the `.env` file to the value of the calendar ID.
 
-Once these three parts are set up and your `.env` file is complete, you may run `npm install` and `npm run start`, which should start the terminal app and offer an open prompt. See the [main project readme](../#README) for usage instructions.
+## Complete
+
+Once these three parts are set up and your `.env` file is complete, you may run `npm install` and `npm run start`, which should start the terminal app and offer an open prompt.
+
+See the [main project readme](../README.md) for usage instructions.
