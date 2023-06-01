@@ -9,7 +9,7 @@ const calendar = google.calendar('v3')
 const runViewEvents = async (query, { model, auth, calendarId }) => {
   const prompt = new PromptTemplate({
     template: VIEW_EVENTS_PROMPT,
-    inputVariables: ['date', 'query', 'u_timezone']
+    inputVariables: ['date', 'query', 'u_timezone', 'dayName']
   })
   const viewEventsChain = new LLMChain({
     llm: model,
@@ -18,8 +18,14 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
 
   const date = new Date().toISOString()
   const u_timezone = getTimezoneOffsetInHours()
+  const dayName = new Date().toLocaleString('en-us', { weekday: 'long' })
 
-  const output = await viewEventsChain.call({ query, date, u_timezone })
+  const output = await viewEventsChain.call({
+    query,
+    date,
+    u_timezone,
+    dayName
+  })
   const loaded = JSON.parse(output['text'])
 
   try {
@@ -30,8 +36,7 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
     })
 
     const curatedItems = response.data.items.map(
-      ({ id, status, summary, description, start, end }) => ({
-        id,
+      ({ status, summary, description, start, end }) => ({
         status,
         summary,
         description,
@@ -40,7 +45,7 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
       })
     )
 
-    return 'Events in JSON format: \n' + JSON.stringify(curatedItems, null, 2)
+    return 'Selected events: \n' + JSON.stringify(curatedItems, null, 2)
   } catch (error) {
     return `An error occurred: ${error}`
   }

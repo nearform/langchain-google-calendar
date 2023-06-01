@@ -19,17 +19,15 @@ const rl = createInterface({
 })
 const question = util.promisify(rl.question).bind(rl)
 
+const googleCalendarParams = {
+  clientEmail: process.env.CLIENT_EMAIL,
+  privateKey: process.env.PRIVATE_KEY,
+  calendarId: process.env.CALENDAR_ID
+}
+
 const tools = [
-  new GoogleCalendarCreateTool({
-    clientEmail: process.env.CLIENT_EMAIL,
-    privateKey: process.env.PRIVATE_KEY,
-    calendarId: process.env.CALENDAR_ID
-  }),
-  new GoogleCalendarViewTool({
-    clientEmail: process.env.CLIENT_EMAIL,
-    privateKey: process.env.PRIVATE_KEY,
-    calendarId: process.env.CALENDAR_ID
-  })
+  new GoogleCalendarCreateTool(googleCalendarParams),
+  new GoogleCalendarViewTool(googleCalendarParams)
 ]
 const agent = await initializeAgentExecutorWithOptions(
   tools,

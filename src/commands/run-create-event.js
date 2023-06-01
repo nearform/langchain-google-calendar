@@ -46,7 +46,7 @@ const createEvent = async (
 const runCreateEvent = async (query, { calendarId, auth, model }) => {
   const prompt = new PromptTemplate({
     template: CREATE_EVENT_PROMPT,
-    inputVariables: ['date', 'query', 'u_timezone']
+    inputVariables: ['date', 'query', 'u_timezone', 'dayName']
   })
   const createEventChain = new LLMChain({
     llm: model,
@@ -55,8 +55,14 @@ const runCreateEvent = async (query, { calendarId, auth, model }) => {
 
   const date = new Date().toISOString()
   const u_timezone = getTimezoneOffsetInHours()
+  const dayName = new Date().toLocaleString('en-us', { weekday: 'long' })
 
-  const output = await createEventChain.call({ query, date, u_timezone })
+  const output = await createEventChain.call({
+    query,
+    date,
+    u_timezone,
+    dayName
+  })
   const loaded = JSON.parse(output['text'])
 
   const [

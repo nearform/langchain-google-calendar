@@ -1,7 +1,7 @@
 {
-  "name": "hub-template",
+  "name": "langchain-google-calendar",
   "version": "1.0.0",
-  "description": "Template to start a new repository on the hub",
+  "description": "A CLI app that uses LangChain and OpenAI API to generate a calendar event from a natural language description.",
   "main": "index.js",
   "type": "module",
   "scripts": {
