@@ -1,6 +1,6 @@
 export const CREATE_TOOL_DESCRIPTION = `A tool for creating Google Calendar events and meetings.
 
-INPUT:
+INPUT examples:
 "action": "google_calendar_create",
 "action_input": "display meetings for today"
 
@@ -21,7 +21,7 @@ Output is a confirmation of a created event.
 `
 
 export const VIEW_TOOL_DESCRIPTION = `A tool for retrieving Google Calendar events and meetings.
-INPUT:
+INPUT examples:
 "action": "google_calendar_view",
 "action_input": "display meetings for today"
 
