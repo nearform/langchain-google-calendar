@@ -45,7 +45,12 @@ const runViewEvents = async (query, { model, auth, calendarId }) => {
       })
     )
 
-    return 'Selected events: \n' + JSON.stringify(curatedItems, null, 2)
+    return (
+      'Result for the prompt "' +
+      query +
+      '": \n' +
+      JSON.stringify(curatedItems, null, 2)
+    )
   } catch (error) {
     return `An error occurred: ${error}`
   }
