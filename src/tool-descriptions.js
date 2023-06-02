@@ -1,18 +1,6 @@
 export const CREATE_TOOL_DESCRIPTION = `A tool for creating Google Calendar events and meetings.
 
-INPUT examples:
-"action": "google_calendar_create",
-"action_input": "display meetings for today"
-
-"action": "google_calendar_create",
-"action_input": "show events for tomorrow"
-
-"action": "google_calendar_create",
-"action_input": "display meetings for tomorrow between 4pm and 8pm"
-
-"action": "google_calendar_create",
-"action_input": "display yesterday's events"
-
+INPUT example:
 "action": "google_calendar_create",
 "action_input": "create a new meeting with John Doe tomorrow at 4pm"
 
@@ -30,9 +18,6 @@ INPUT examples:
 
 "action": "google_calendar_view",
 "action_input": "display meetings for tomorrow between 4pm and 8pm"
-
-"action": "google_calendar_view",
-"action_input": "display yesterday's events"
 
 OUTPUT:
 - title, start time, end time, attendees, description (if available)
