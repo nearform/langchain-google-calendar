@@ -41,18 +41,8 @@ class GoogleCalendarBase extends Tool {
 export class GoogleCalendarCreateTool extends GoogleCalendarBase {
   constructor(params) {
     super(params)
-    Object.defineProperty(this, 'name', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: 'google_calendar_create'
-    })
-    Object.defineProperty(this, 'description', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: CREATE_TOOL_DESCRIPTION
-    })
+    this.name = 'google_calendar_create'
+    this.description = CREATE_TOOL_DESCRIPTION
   }
 
   async _call(query) {
@@ -70,18 +60,8 @@ export class GoogleCalendarCreateTool extends GoogleCalendarBase {
 export class GoogleCalendarViewTool extends GoogleCalendarBase {
   constructor(params) {
     super(params)
-    Object.defineProperty(this, 'name', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: 'google_calendar_view'
-    })
-    Object.defineProperty(this, 'description', {
-      enumerable: true,
-      configurable: true,
-      writable: true,
-      value: VIEW_TOOL_DESCRIPTION
-    })
+    this.name = 'google_calendar_view'
+    this.description = VIEW_TOOL_DESCRIPTION
   }
 
   async _call(query) {
