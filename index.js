@@ -4,7 +4,7 @@ import { createInterface } from 'readline'
 import {
   GoogleCalendarCreateTool,
   GoogleCalendarViewTool
-} from './src/google_calendar_tool.js'
+} from './src/tools/index.js'
 import * as dotenv from 'dotenv'
 import chalk from 'chalk'
 import { checkEnvVars } from './src/utils/index.js'
