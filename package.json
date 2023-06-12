@@ -1,7 +1,7 @@
 {
-  "name": "langchain-google-calendar",
+  "name": "hub-template",
   "version": "1.0.0",
-  "description": "A CLI app that uses LangChain and OpenAI API to generate a calendar event from a natural language description.",
+  "description": "Template to start a new repository on the hub",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -24,7 +24,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "eslint": "^8.41.0",
+    "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
@@ -36,8 +36,8 @@
   },
   "dependencies": {
     "chalk": "^5.2.0",
-    "dotenv": "^16.1.0",
+    "dotenv": "^16.1.4",
     "googleapis": "^118.0.0",
-    "langchain": "^0.0.87"
+    "langchain": "^0.0.92"
   }
 }
