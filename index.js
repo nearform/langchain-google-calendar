@@ -1,7 +1,10 @@
 import { ChatOpenAI } from 'langchain/chat_models/openai'
 import { initializeAgentExecutorWithOptions } from 'langchain/agents'
 import { createInterface } from 'readline'
-import { GoogleCalendarTool } from './src/google_calendar_tool.js'
+import {
+  GoogleCalendarCreateTool,
+  GoogleCalendarViewTool
+} from './src/tools/index.js'
 import * as dotenv from 'dotenv'
 import chalk from 'chalk'
 import { checkEnvVars } from './src/utils/index.js'
@@ -16,12 +19,15 @@ const rl = createInterface({
 })
 const question = util.promisify(rl.question).bind(rl)
 
+const googleCalendarParams = {
+  clientEmail: process.env.CLIENT_EMAIL,
+  privateKey: process.env.PRIVATE_KEY,
+  calendarId: process.env.CALENDAR_ID
+}
+
 const tools = [
-  new GoogleCalendarTool({
-    clientEmail: process.env.CLIENT_EMAIL,
-    privateKey: process.env.PRIVATE_KEY,
-    calendarId: process.env.CALENDAR_ID
-  })
+  new GoogleCalendarCreateTool(googleCalendarParams),
+  new GoogleCalendarViewTool(googleCalendarParams)
 ]
 const agent = await initializeAgentExecutorWithOptions(
   tools,
