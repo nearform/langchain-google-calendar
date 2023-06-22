@@ -1,13 +1,8 @@
-import { ChatOpenAI } from 'langchain/chat_models/openai'
-import { initializeAgentExecutorWithOptions } from 'langchain/agents'
 import { createInterface } from 'readline'
-import {
-  GoogleCalendarCreateTool,
-  GoogleCalendarViewTool
-} from '../src/tools/index.js'
+import { GoogleCalendarAgent } from '../dist/index.js'
 import * as dotenv from 'dotenv'
 import chalk from 'chalk'
-import { checkEnvVars } from '../src/utils/index.js'
+import { checkEnvVars } from '../dist/utils/index.js'
 import util from 'util'
 dotenv.config()
 
@@ -17,25 +12,21 @@ const rl = createInterface({
   input: process.stdin,
   output: process.stdout
 })
+
 const question = util.promisify(rl.question).bind(rl)
 
 const googleCalendarParams = {
-  clientEmail: process.env.CLIENT_EMAIL,
-  privateKey: process.env.PRIVATE_KEY,
-  calendarId: process.env.CALENDAR_ID
+  credentials: {
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY,
+    calendarId: process.env.CALENDAR_ID
+  }
 }
 
-const tools = [
-  new GoogleCalendarCreateTool(googleCalendarParams),
-  new GoogleCalendarViewTool(googleCalendarParams)
-]
-const agent = await initializeAgentExecutorWithOptions(
-  tools,
-  new ChatOpenAI({
-    temperature: 0
-  }),
-  { agentType: 'chat-zero-shot-react-description', verbose: true }
-)
+const agent = await new GoogleCalendarAgent({
+  mode: 'full',
+  calendarOptions: googleCalendarParams
+}).init()
 
 const showInfoMessage = () => {
   console.log(
@@ -57,11 +48,11 @@ const showInfoMessage = () => {
 }
 
 const enterPrompt = async () => {
-  const prompt = await question('Enter your prompt: ')
+  const prompt = (await question('Enter your prompt: ')) as unknown as string
   if (prompt.toLowerCase() === 'exit') {
     rl.close()
   } else {
-    const result = await agent.call({ input: prompt })
+    const result = await agent.execute(prompt)
     console.log({ result })
     await enterPrompt()
   }

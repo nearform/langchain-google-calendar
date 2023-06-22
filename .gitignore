@@ -11,3 +11,7 @@ node_modules
 .DS_Store
 .nyc_output
 
+dist
+bin/*.js
+bin/*.d.ts
+src/**/*.js

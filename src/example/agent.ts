@@ -1,18 +1,24 @@
 import * as dotenv from 'dotenv'
-import { GoogleCalendarAgent } from '../src/index.js'
+import { GoogleCalendarAgent } from '../index.js'
 
 dotenv.config()
 
 const googleCalendarParams = {
-  clientEmail: process.env.CLIENT_EMAIL,
-  privateKey: process.env.PRIVATE_KEY,
-  calendarId: process.env.CALENDAR_ID
+  credentials: {
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY,
+    calendarId: process.env.CALENDAR_ID
+  },
+  scopes: [
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events'
+  ]
 }
 
 async function example() {
   const calendarAgent = await new GoogleCalendarAgent({
     mode: 'full',
-    credentials: googleCalendarParams,
+    calendarOptions: googleCalendarParams,
     openApiOptions: { temperature: 0, openAIApiKey: process.env.OPENAI_API_KEY }
   }).init()
 

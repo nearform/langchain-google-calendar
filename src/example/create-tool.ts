@@ -2,9 +2,21 @@ import * as dotenv from 'dotenv'
 import { initializeAgentExecutorWithOptions } from 'langchain/agents'
 import { OpenAI } from 'langchain/llms/openai'
 import { Calculator } from 'langchain/tools/calculator'
-import { GoogleCalendarCreateTool } from '../src/index.js'
+import { GoogleCalendarCreateTool } from '../index.js'
 
 dotenv.config()
+
+const googleCalendarParams = {
+  credentials: {
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY,
+    calendarId: process.env.CALENDAR_ID
+  },
+  scopes: [
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events'
+  ]
+}
 
 async function example() {
   const model = new OpenAI({
@@ -14,11 +26,7 @@ async function example() {
 
   const tools = [
     new Calculator(),
-    new GoogleCalendarCreateTool({
-      clientEmail: process.env.CLIENT_EMAIL,
-      privateKey: process.env.PRIVATE_KEY,
-      calendarId: process.env.CALENDAR_ID
-    })
+    new GoogleCalendarCreateTool(googleCalendarParams)
   ]
 
   const calendarAgent = await initializeAgentExecutorWithOptions(tools, model, {
