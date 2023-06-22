@@ -11,6 +11,10 @@ Before you begin, ensure you have met the following requirements:
 - Install all project dependencies
 - Make sure to have `.env` file with all the required values
 
+**Caution**
+
+If you are utilising a Google account belonging to a business/enterprise Google Workspace additional issues may arise whereby administraion priviliges will be required to [adequatley configure permissions](https://apps.google.com/supportwidget/articlehome?hl=en&article_url=https%3A%2F%2Fsupport.google.com%2Fa%2Fanswer%2F60765%3Fhl%3Den&assistant_id=generic-unu&product_context=60765&product_name=UnuFlow&trigger_context=a) to share and interact with Google Calendar
+
 ### CLI
 
 The CLI tool exposes a prompt interface on your command line you can use to interact with a Google Calendar.
