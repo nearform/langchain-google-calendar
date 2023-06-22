@@ -9,4 +9,9 @@ node_modules
 
 # OS X
 .DS_Store
+.nyc_output
 
+dist
+bin/*.js
+bin/*.d.ts
+src/**/*.js

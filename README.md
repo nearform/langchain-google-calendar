@@ -1,20 +1,56 @@
-# LangChain Google Calendar
-This is a Google Calendar JS tool for LangChain. It allows creating and retrieving events from a linked Google Calendar.
+# Google Calendar LangChain
 
-## Setup
+Google Calendar LangChain is a tool for integrating with Google Calendar. Using this tool, users can view and create events directly using natural language prompts. Built on [Langchain](https://js.langchain.com/docs/), this exposes two tools that can be used together or individually along with a cli tool as well as pre-baked functonality to import and use directly in a project.
 
-See [./docs/setup.md](./docs/setup.md) for full setup instructions.
+## Prerequisites
 
-## Run the project
+Before you begin, ensure you have met the following requirements:
 
-1. Make sure to have `.env` file with all the required values (see [setup guide](./docs/setup.md)).
-1. Install the dependencies: `npm install`
-1. Run the project: `npm start`
-1. Enter your prompt to interact with your calendar. Examples:
-   - *Create a new meeting tomorrow at 7pm with my friend.*
-   - *What are my meetings tomorrow?*
-   - *Do I have any meeting with my friend tomorrow?*
+- You have a Google account with Google Calendar enabled.
+- You have obtained necessary credentials (API key, Client ID, Client Secret) from Google. See [./docs/setup.md](./docs/setup.md) for full setup instructions.
+- Install all project dependencies
+- Make sure to have `.env` file with all the required values
+
+**Caution**
+
+If you are utilising a Google account belonging to a business/enterprise Google Workspace additional issues may arise whereby administraion priviliges will be required to [adequatley configure permissions](https://apps.google.com/supportwidget/articlehome?hl=en&article_url=https%3A%2F%2Fsupport.google.com%2Fa%2Fanswer%2F60765%3Fhl%3Den&assistant_id=generic-unu&product_context=60765&product_name=UnuFlow&trigger_context=a) to share and interact with Google Calendar
+
+### CLI
+
+The CLI tool exposes a prompt interface on your command line you can use to interact with a Google Calendar.
+
+To use this you can run the following command, once you have suitably configured your `.env` file:
+
+```
+npm run start
+```
+
+Once it is running, it will display some example questions to give you a guide on how to interact with the specified calendar.
 
 Prompts are processed in multiple steps and usually take at least several seconds to complete. Verbose output is shown in the console while each step of the process is running, then the final response will have the key `"result"` with a key `"output"`.
 
 Note that the output may sometimes pause for several seconds. This is normal and does not usually indicate a problem.
+
+## Langchain Tools
+
+### GoogleCalendarCreateTool
+
+The `GoogleCalendarCreateTool` provides write functionality to interact with a Google Calendar.
+
+This can be imported to be used as a tool in your project. You can view an [example of this in the examples directory](src/example/create-tool.ts)
+
+### GoogleCalendarViewTool
+
+The `GoogleCalendarViewTool` provides read functionality to interact with a Google Calendar.
+
+This can be imported to be used as a tool in your project. You can view an [example of this in the examples directory](src/example/view-tool.ts)
+
+### Combined Tool Usage
+
+The `GoogleCalendarCreateTool` and `GoogleCalendarViewTool` can also both be imported as added as tools to be used together in your project. You can view an [example of this in the examples directory](src/example/combined-tools.ts)
+
+### Packaged Function
+
+This repository also provides a pre-packaged function allowing you to import an [agent](https://js.langchain.com/docs/modules/agents/) for direct usage in your application.
+
+You can view an [example of this in the examples directory](src/example/agent.ts)

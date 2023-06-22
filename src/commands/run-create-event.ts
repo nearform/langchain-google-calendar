@@ -2,9 +2,21 @@ import { PromptTemplate } from 'langchain/prompts'
 import { CREATE_EVENT_PROMPT } from '../prompts/index.js'
 import { LLMChain } from 'langchain/chains'
 import { getTimezoneOffsetInHours } from '../utils/index.js'
-import { google } from 'googleapis'
+import { google, calendar_v3 } from 'googleapis'
+import type { JWT, GaxiosResponse } from 'googleapis-common'
+import type { OpenAI } from 'langchain/llms/openai'
 
 const calendar = google.calendar('v3')
+
+type CreateEventParams = {
+  eventSummary: string
+  eventStartTime: string
+  eventEndTime: string
+  userTimezone: string
+  eventLocation?: string
+  eventDescription?: string
+}
+
 const createEvent = async (
   {
     eventSummary,
@@ -13,9 +25,9 @@ const createEvent = async (
     userTimezone,
     eventLocation = '',
     eventDescription = ''
-  },
-  calendarId,
-  auth
+  }: CreateEventParams,
+  calendarId: string,
+  auth: JWT
 ) => {
   const event = {
     summary: eventSummary,
@@ -37,13 +49,25 @@ const createEvent = async (
       calendarId,
       requestBody: event
     })
+
     return createdEvent
   } catch (error) {
-    return `An error occurred: ${error}`
+    return {
+      error: `An error occurred: ${error}`
+    }
   }
 }
 
-const runCreateEvent = async (query, { calendarId, auth, model }) => {
+type RunCreateEventParams = {
+  calendarId: string
+  auth: JWT
+  model: OpenAI
+}
+
+const runCreateEvent = async (
+  query: string,
+  { calendarId, auth, model }: RunCreateEventParams
+) => {
   const prompt = new PromptTemplate({
     template: CREATE_EVENT_PROMPT,
     inputVariables: ['date', 'query', 'u_timezone', 'dayName']
@@ -82,12 +106,20 @@ const runCreateEvent = async (query, { calendarId, auth, model }) => {
       userTimezone,
       eventLocation,
       eventDescription
-    },
+    } as CreateEventParams,
     calendarId,
     auth
   )
 
-  return `Event created successfully, details: event ${event.data.htmlLink}`
+  if (!(event as { error: string }).error) {
+    return `Event created successfully, details: event ${
+      (event as GaxiosResponse<calendar_v3.Schema$Event>).data.htmlLink
+    }`
+  }
+
+  return `An error occurred creating the event: ${
+    (event as { error: string }).error
+  }`
 }
 
 export { runCreateEvent }
