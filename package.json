@@ -42,7 +42,7 @@
   },
   "homepage": "https://github.com/nearform/langchain-google-calendar",
   "devDependencies": {
-    "@commitlint/cli": "^17.6.6",
+    "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
     "@tsconfig/recommended": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
