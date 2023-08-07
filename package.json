@@ -50,7 +50,7 @@
     "cross-env": "^7.0.3",
     "dpdm": "^3.13.1",
     "eslint": "^8.46.0",
-    "eslint-config-prettier": "^8.9.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "esmock": "^2.3.5",
     "husky": "^8.0.3",
