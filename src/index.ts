@@ -12,16 +12,13 @@ import {
   GoogleCalendarViewTool
 } from './tools/index.js'
 import type { GoogleCalendarAgentParams } from './tools/google-calendar-base.js'
-import type { BaseChatModelParams } from 'langchain/chat_models'
-import type { ConfigurationParameters } from 'openai'
+import type { BaseChatModelParams } from 'langchain/chat_models/base'
 
 type OpenAIOptions = Partial<OpenAIChatInput> &
   Partial<AzureOpenAIInput> &
   BaseChatModelParams & {
     concurrency?: number
-    cache?: boolean
     openAIApiKey?: string
-    configuration?: ConfigurationParameters
   }
 
 export type CalendarAgentParams = {
@@ -34,7 +31,7 @@ export type CalendarAgentParams = {
 class GoogleCalendarAgent {
   protected tools: any[]
   protected agent: any
-  protected openApiOptions: Partial<ChatOpenAI>
+  protected openApiOptions: OpenAIOptions
   protected executorOptions: InitializeAgentExecutorOptions
 
   constructor({
