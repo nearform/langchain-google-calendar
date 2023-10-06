@@ -1,5 +1,7 @@
 # Google Calendar LangChain
 
+> 📢 As of release https://github.com/langchain-ai/langchainjs/releases/tag/0.0.159, this spike has been integrated into LangChain.js
+
 Google Calendar LangChain is a tool for integrating with Google Calendar. Using this tool, users can view and create events directly using natural language prompts. Built on [Langchain](https://js.langchain.com/docs/), this exposes two tools that can be used together or individually along with a cli tool as well as pre-baked functonality to import and use directly in a project.
 
 ## Prerequisites
